@@ -2,21 +2,18 @@
 using System.Net.Mail;
 using System.Net;
 using THPCore.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace THPCore.Senders;
 
-public class EmailSender : IEmailSender
+public class EmailSender(IConfiguration _configuration) : IEmailSender
 {
-    private readonly IConfiguration _configuration;
-    public EmailSender(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
     public async Task<string> SendAsync(string receiver, string subject, string message)
     {
         try
         {
+            if (!IsValidEmail(receiver)) return string.Empty;
+
             var password = _configuration["Settings:EmailPassword"];
             var senderEmail = new MailAddress("info@dhhp.edu.vn", "Trường Đại Học Hải Phòng");
             var receiverEmail = new MailAddress(receiver);
@@ -41,6 +38,28 @@ public class EmailSender : IEmailSender
         catch (Exception ex)
         {
             return ex.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Validates whether a string is a valid email address.
+    /// </summary>
+    /// <param name="email">The email address to validate.</param>
+    /// <returns>True if the email is valid; otherwise, false.</returns>
+    public static bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        try
+        {
+            // Use a regular expression to validate email format
+            string emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, emailRegex, RegexOptions.IgnoreCase);
+        }
+        catch
+        {
+            return false; // Return false if an exception occurs
         }
     }
 }
