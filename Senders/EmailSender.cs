@@ -15,7 +15,9 @@ public class EmailSender(IConfiguration _configuration) : IEmailSender
             if (!IsValidEmail(receiver)) return string.Empty;
 
             var password = _configuration["Settings:EmailPassword"];
-            var senderEmail = new MailAddress("info@dhhp.edu.vn", "Trường Đại Học Hải Phòng");
+            var sender = _configuration["Settings:EmailSender"];
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(sender)) return string.Empty;
+            var senderEmail = new MailAddress(sender, "Trường Đại Học Hải Phòng");
             var receiverEmail = new MailAddress(receiver);
             var smtp = new SmtpClient
             {

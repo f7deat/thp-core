@@ -7,9 +7,7 @@ public class EnumHelper
 {
     public static List<string> GetEnumDisplayNames<T>() where T : Enum
     {
-        return typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static)
-            .Select(field => field.GetCustomAttribute<DisplayAttribute>()?.Name ?? field.Name)
-            .ToList();
+        return [.. typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static).Select(field => field.GetCustomAttribute<DisplayAttribute>()?.Name ?? field.Name)];
     }
 
     public static string GetEnumDisplayName<T>(T enumValue) where T : Enum
@@ -21,6 +19,6 @@ public class EnumHelper
 
     public static List<T> EnumToList<T>() where T : Enum
     {
-        return Enum.GetValues(typeof(T)).Cast<T>().ToList();
+        return [.. Enum.GetValues(typeof(T)).Cast<T>()];
     }
 }

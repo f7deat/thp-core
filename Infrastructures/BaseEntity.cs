@@ -1,8 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using THPCore.Interfaces;
 
 namespace THPCore.Infrastructures;
+
+public interface IBaseEntity<T>
+{
+    T Id { get; set; }
+}
+
+public interface IBaseEntity
+{
+    Guid Id { get; set; }
+}
 
 public class BaseEntity<T> : IBaseEntity<T>
 {
