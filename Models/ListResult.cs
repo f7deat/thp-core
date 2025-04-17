@@ -3,17 +3,30 @@ using THPCore.Interfaces;
 
 namespace THPCore.Models;
 
-public class ListResult<T>(IEnumerable<T> data, int total, IFilterOptions filterOptions) where T : class
+public class ListResult<T> where T : class
 {
-    public IEnumerable<T> Data { get; set; } = data;
-    public int Total { get; set; } = total;
+    public ListResult(string? message)
+    {
+        Message = message;
+    }
+
+    public ListResult(IEnumerable<T> data, int total, IFilterOptions filterOptions)
+    {
+        Data = data;
+        Total = total;
+        FilterOptions = filterOptions;
+    }
+
+    private readonly IFilterOptions FilterOptions = new FilterOptions();
+    public string? Message { get; set; }
+    public IEnumerable<T> Data { get; set; } = [];
+    public int Total { get; set; }
     public bool Succeeded { get; } = true;
 
-    public bool HasNextPage => Total > filterOptions.Current * filterOptions.PageSize;
-    public bool HasPreviousPage => filterOptions.Current > 1;
-    public bool HasData => Data.Any();
-    public int Current => filterOptions.Current;
-    public int PageSize => filterOptions.PageSize;
+    public bool HasNextPage => Total > FilterOptions.Current * FilterOptions.PageSize;
+    public bool HasPreviousPage => FilterOptions.Current > 1;
+    public int Current => FilterOptions.Current;
+    public int PageSize => FilterOptions.PageSize;
 
     public static async Task<ListResult<T>> Success(IQueryable<T> query, IFilterOptions filterOptions)
     {
@@ -21,4 +34,6 @@ public class ListResult<T>(IEnumerable<T> data, int total, IFilterOptions filter
         if (filterOptions.PageSize > 1000) filterOptions.PageSize = 1000;
         return new ListResult<T>(await query.AsNoTracking().Skip((filterOptions.Current - 1) * filterOptions.PageSize).Take(filterOptions.PageSize).ToListAsync(), await query.CountAsync(), filterOptions);
     }
+
+    public static ListResult<T> Failed(string? message) => new(message);
 }

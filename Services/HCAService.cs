@@ -4,14 +4,8 @@ using THPCore.Interfaces;
 
 namespace THPCore.Services;
 
-public class HCAService : IHCAService
+public class HCAService(IHttpContextAccessor _httpContextAccessor) : IHCAService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    public HCAService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     public IEnumerable<string>? GetRoles()
     {
         var user = _httpContextAccessor.HttpContext?.User;
