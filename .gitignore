@@ -6,3 +6,5 @@
 /obj
 /.vs/THPCore
 /.vs/ProjectEvaluation
+/Properties/PublishProfiles
+/THPCore.csproj.user
