@@ -3,12 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<PackageId>THPCore</PackageId>
-		<Version>1.0.7</Version>
+		<Version>1.0.8</Version>
 		<Authors>f7deat</Authors>
 		<Description>Hai Phong University Core.</Description>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RepositoryUrl>https://github.com/f7deat/thp-core</RepositoryUrl>
 		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
