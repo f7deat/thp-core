@@ -11,4 +11,12 @@ public class RoleName
     /// </summary>
     public const string HOD = nameof(HOD);
     public const string HR = nameof(HR);
+    /// <summary>
+    /// Hiệu trưởng
+    /// </summary>
+    public const string Rector = nameof(Rector);
+    /// <summary>
+    /// Phó hiệu trưởng
+    /// </summary>
+    public const string ViceRector = nameof(ViceRector);
 }

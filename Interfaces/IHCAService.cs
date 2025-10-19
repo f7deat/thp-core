@@ -7,4 +7,6 @@ public interface IHCAService
     bool IsUserInAnyRole(params string[] roles);
     string GetUserId();
     string GetUserName();
+    bool HasClaim(string claimType, string? claimValue = null);
+    string? GetClaimValue(string claimType);
 }

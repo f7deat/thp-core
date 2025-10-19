@@ -44,4 +44,20 @@ public class HCAService(IHttpContextAccessor _httpContextAccessor) : IHCAService
         var user = _httpContextAccessor.HttpContext?.User;
         return user?.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
     }
+
+    public bool HasClaim(string claimType, string? claimValue = null)
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user == null || !user.Identity?.IsAuthenticated == true) return false;
+
+        if (string.IsNullOrEmpty(claimValue)) return user.HasClaim(c => c.Type == claimType);
+
+        return user.HasClaim(c => c.Type == claimType && c.Value == claimValue);
+    }
+
+    public string? GetClaimValue(string claimType)
+    {
+        var user = _httpContextAccessor?.HttpContext?.User;
+        return user?.FindFirst(claimType)?.Value;
+    }
 }
